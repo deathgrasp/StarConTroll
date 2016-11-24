@@ -63,10 +63,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ConfigurationManager.cs" />
-    <Compile Include="Assets\InputManager.cs" />
-    <Compile Include="Assets\LineScript.cs" />
-    <Compile Include="Assets\Ship.cs" />
+    <Compile Include="Assets\Scripts\ButtonScripts.cs" />
+    <Compile Include="Assets\Scripts\ConfigurationManager.cs" />
+    <Compile Include="Assets\Scripts\InputManager.cs" />
+    <Compile Include="Assets\Scripts\LineScript.cs" />
+    <Compile Include="Assets\Scripts\Missile.cs" />
+    <Compile Include="Assets\Scripts\Ship.cs" />
+    <Compile Include="Assets\Scripts\TurnManager.cs" />
+    <Compile Include="Assets\Scripts\TurnTimer.cs" />
     <Compile Include="Assets\Utils\GameObjectExtensions.cs" />
     <Compile Include="Assets\Utils\ImprovedMonoBehaviour.cs" />
     <Compile Include="Assets\Utils\ImprovedUnitySingletonPresistenty.cs" />

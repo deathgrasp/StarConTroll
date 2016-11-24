@@ -1,31 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 
 public class Ship : MonoBehaviour
 {
 
-    public float MoveSpeedSec=2; //movement speed in units per second
+    public float MoveSpeedSec = 2; //movement speed in units per second
     public float MoveSpeed;
-    public float TurnSpeedSec =50; //turning speed in degrees
+    public float TurnSpeedSec = 50; //turning speed in degrees
     public float TurnSpeed;
     private Vector2 _destination = new Vector2();
 
     // Use this for initialization
-    void Start () {
-	    _destination.Set(transform.position.x,transform.position.y);
-        MoveSpeed = MoveSpeedSec*ConfigurationManager.Instance.FixedUpdateStep;
-        TurnSpeed= TurnSpeedSec* ConfigurationManager.Instance.FixedUpdateStep;
-        _destination.Set(4,4);
+    void Start()
+    {
+        _destination.Set(transform.position.x, transform.position.y);
+        MoveSpeed = MoveSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
+        TurnSpeed = TurnSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
+        _destination.Set(4, 4);
     }
 
     // Update is called once per frame
-    void FixedUpdate () {
-	        Move(_destination);
-	    }
+    void FixedUpdate()
+    {
+        _destination = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Move(_destination);
+    }
 
-       public void Move(Vector3 destination)
-        {
+    public void Move(Vector3 destination)
+    {
         if ((Vector2.Distance(destination, transform.position)) < MoveSpeed)
         {
             transform.position = destination;
@@ -33,8 +37,8 @@ public class Ship : MonoBehaviour
         else
         {
 
-           
-            transform.rotation =ShipRotation(destination);
+
+            transform.rotation = ShipRotation(destination);
 
             //move forward
             transform.position += ShipMovement(); //move forward (right = x axis = red arrow = forward)
@@ -45,7 +49,7 @@ public class Ship : MonoBehaviour
     /// Computes the ship's new rotation
     /// </summary>
     /// <returns>Rotation after a single frame</returns>
-     Quaternion ShipRotation(Vector2 destination)
+    Quaternion ShipRotation(Vector2 destination)
     {
         //Find rotation and adjust angle
         Vector2 vectorToTarget = destination - (Vector2)transform.position;
@@ -59,8 +63,13 @@ public class Ship : MonoBehaviour
     /// Computes the new ship's location
     /// </summary>
     /// <returns>New ships location</returns>
-     Vector3 ShipMovement()
+    Vector3 ShipMovement()
     {
-        return MoveSpeed*transform.right;
+        return MoveSpeed * transform.right;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        print("triggered by " + other.name);
     }
 }

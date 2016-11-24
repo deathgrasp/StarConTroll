@@ -9,6 +9,7 @@ public class InputManager : UnitySingleton<InputManager>
     public Ship Ship;
     public LineRenderer LineRenderer;
     private const int MAXPATHPOINTS = 1000;
+    public GameObject Marker;
     // Use this for initialization
     void Start()
     {
@@ -23,7 +24,12 @@ public class InputManager : UnitySingleton<InputManager>
     // Update is called once per frame
     void Update()
     {
+        Marker.transform.position = Ship.transform.position;
         DrawPath();
+        if (Input.GetMouseButtonDown(0))
+        {
+            OnLeftMouseClick();
+        }
     }
 
     private Stack<Vector3> _pathPointStack = new Stack<Vector3>();
@@ -79,5 +85,34 @@ public class InputManager : UnitySingleton<InputManager>
         {
             _helperStack.Push(_pathPointStack.Pop());
         }
+    }
+
+    private Missile _missilePrefab;
+
+    private Missile MissilePrefab
+    {
+        get { return _missilePrefab ?? (_missilePrefab = Resources.Load<Missile>("Missile")); }
+    }
+    void OnLeftMouseClick()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+        
+        print(hit.collider);
+        if (hit.collider!=null)
+        {
+            var clicked = hit.collider.GetComponent<Ship>();
+            if (clicked != null)
+            {
+                Ship = clicked;
+            }
+        }
+        else
+        {
+            Vector3 mousePointer = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var missile = Instantiate(MissilePrefab, Ship.transform.position, Ship.transform.rotation) as Missile;
+
+            missile.Direction = mousePointer;
+        }
+        
     }
 }
