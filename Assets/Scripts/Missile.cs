@@ -11,6 +11,7 @@ public class Missile : MonoBehaviour
     public Vector3 Direction;
     public CircleCollider2D CircleCollider2D;
     private bool _destroyNextFrame;
+    public LineRenderer LineRenderer;
 	// Use this for initialization
 	void Start ()
 	{

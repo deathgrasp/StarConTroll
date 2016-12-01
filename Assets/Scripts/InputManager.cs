@@ -10,11 +10,13 @@ public class InputManager : UnitySingleton<InputManager>
     public LineRenderer LineRenderer;
     private const int MAXPATHPOINTS = 1000;
     public GameObject Marker;
+    private Stack<Vector3> _pathPointStack = new Stack<Vector3>(); //current path. getting restarted on each DrawPath and then repopulated again
+    private Stack<Vector3> _helperStack = new Stack<Vector3>(1000);//helper to keep avoid instantiating new vectors each time
     // Use this for initialization
     void Start()
     {
         LineRenderer.SetColors(Color.red, Color.yellow);
-        LineRenderer.SetWidth(0.2f, 0.2f);
+        LineRenderer.SetWidth(0.1f, 0.1f);
         for (int i = 0; i < MAXPATHPOINTS; i++)
         {
             _helperStack.Push(new Vector3());
@@ -30,15 +32,18 @@ public class InputManager : UnitySingleton<InputManager>
         {
             OnLeftMouseClick();
         }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            OnRightMouseClick();
+        }
     }
 
-    private Stack<Vector3> _pathPointStack = new Stack<Vector3>();
-    private Stack<Vector3> _helperStack = new Stack<Vector3>(1000);
+
     private Vector3 _lastMousePosition = new Vector3();
     //clean code
     void DrawPath()
     {
-
+        ClearStack();
         //get mouse location
         Vector3 mousePointer = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePointer.z = 0;
@@ -68,7 +73,6 @@ public class InputManager : UnitySingleton<InputManager>
         //return to initial state
         Ship.transform.position = initialPosition;
         Ship.transform.rotation = initialRotation;
-        ClearStack();
     }
     //move a point from the pool into the stack and set its values
     void AddPoint(Vector3 point)
@@ -93,11 +97,11 @@ public class InputManager : UnitySingleton<InputManager>
     {
         get { return _missilePrefab ?? (_missilePrefab = Resources.Load<Missile>("Missile")); }
     }
+
     void OnLeftMouseClick()
     {
         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
         
-        print(hit.collider);
         if (hit.collider!=null)
         {
             var clicked = hit.collider.GetComponent<Ship>();
@@ -112,7 +116,17 @@ public class InputManager : UnitySingleton<InputManager>
             var missile = Instantiate(MissilePrefab, Ship.transform.position, Ship.transform.rotation) as Missile;
 
             missile.Direction = mousePointer;
+            missile.LineRenderer.SetVertexCount(_pathPointStack.Count);
+            missile.LineRenderer.SetPositions(_pathPointStack.ToArray());
         }
         
+    }
+
+    void OnRightMouseClick()
+    {
+        Vector3 mousePointer = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Ship.SetDestination(mousePointer);
+        Ship.LineRenderer.SetVertexCount(_pathPointStack.Count);
+        Ship.LineRenderer.SetPositions(_pathPointStack.ToArray());
     }
 }

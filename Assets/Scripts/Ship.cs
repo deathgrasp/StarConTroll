@@ -11,21 +11,26 @@ public class Ship : MonoBehaviour
     public float TurnSpeedSec = 50; //turning speed in degrees
     public float TurnSpeed;
     private Vector2 _destination = new Vector2();
-
+    public LineRenderer LineRenderer =new LineRenderer();
     // Use this for initialization
     void Start()
     {
         _destination.Set(transform.position.x, transform.position.y);
         MoveSpeed = MoveSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
         TurnSpeed = TurnSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
-        _destination.Set(4, 4);
+        LineRenderer.SetColors(Color.green, Color.blue);
+        LineRenderer.SetWidth(0.05f, 0.05f);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        _destination = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Move(_destination);
+    }
+
+    public void SetDestination(Vector3 destination)
+    {
+        _destination = destination;
     }
 
     public void Move(Vector3 destination)
