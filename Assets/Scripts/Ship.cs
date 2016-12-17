@@ -1,80 +1,37 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Runtime.CompilerServices;
-using UnityEditor;
 
-public class Ship : MonoBehaviour
+namespace Assets.Scripts
 {
-
-    public float MoveSpeedSec = 2; //movement speed in units per second
-    public float MoveSpeed;
-    public float TurnSpeedSec = 50; //turning speed in degrees
-    public float TurnSpeed;
-    private Vector2 _destination = new Vector2();
-    public LineRenderer LineRenderer =new LineRenderer();
-    // Use this for initialization
-    void Start()
+    public class Ship : SpaceObject
     {
-        _destination.Set(transform.position.x, transform.position.y);
-        MoveSpeed = MoveSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
-        TurnSpeed = TurnSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
-        LineRenderer.SetColors(Color.green, Color.blue);
-        LineRenderer.SetWidth(0.05f, 0.05f);
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        Move(_destination);
-    }
-
-    public void SetDestination(Vector3 destination)
-    {
-        _destination = destination;
-    }
-
-    public void Move(Vector3 destination)
-    {
-        if ((Vector2.Distance(destination, transform.position)) < MoveSpeed)
+        // Use this for initialization
+        void Start()
         {
-            transform.position = destination;
-        }
-        else
-        {
-
-
-            transform.rotation = ShipRotation(destination);
-
-            //move forward
-            transform.position += ShipMovement(); //move forward (right = x axis = red arrow = forward)
+            Destination = transform.position;
+            MoveSpeed = MoveSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
+            TurnSpeed = TurnSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
+            LineRenderer.SetColors(Color.green, Color.blue);
+            LineRenderer.SetWidth(0.05f, 0.05f);
         }
 
-    }
-    /// <summary>
-    /// Computes the ship's new rotation
-    /// </summary>
-    /// <returns>Rotation after a single frame</returns>
-    Quaternion ShipRotation(Vector2 destination)
-    {
-        //Find rotation and adjust angle
-        Vector2 vectorToTarget = destination - (Vector2)transform.position;
-        float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        // Update is called once per frame
+        void FixedUpdate()
+        {
+            Move(Destination);
+        }
 
-        //return new rotation
-        return Quaternion.RotateTowards(transform.rotation, rotation, TurnSpeed);
-    }
-    /// <summary>
-    /// Computes the new ship's location
-    /// </summary>
-    /// <returns>New ships location</returns>
-    Vector3 ShipMovement()
-    {
-        return MoveSpeed * transform.right;
-    }
+        public void SetDestination(Vector3 destination)
+        {
+            Destination = destination;
+        }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        print("triggered by " + other.name);
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            var collided = other.GetComponent<Missile>();
+            if (collided)
+            {
+                SufferDamage(collided.Damage);
+            }
+        }
     }
 }

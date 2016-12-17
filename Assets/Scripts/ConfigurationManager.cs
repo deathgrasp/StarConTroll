@@ -1,9 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using Assets.Utils;
+﻿using Assets.Utils;
 
-public class ConfigurationManager : UnitySingleton<ConfigurationManager>
+namespace Assets.Scripts
 {
-    public float FixedUpdateStep=0.02f;
-    public float TurnDuration = 3f;
+    public class ConfigurationManager : UnitySingleton<ConfigurationManager>
+    {
+        public float FixedUpdateStep=0.02f;
+        public float TurnDuration = 3f;
+    }
 }
