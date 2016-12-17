@@ -12,6 +12,7 @@ namespace Assets.Scripts
             TurnSpeed = TurnSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
             LineRenderer.SetColors(Color.green, Color.blue);
             LineRenderer.SetWidth(0.05f, 0.05f);
+            PathsManager.Instance.DrawPath(this, Destination);
         }
 
         // Update is called once per frame

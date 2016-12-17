@@ -14,6 +14,9 @@ namespace Assets.Scripts
             TurnSpeed = TurnSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
             Destination.z = 0;
             transform.position += transform.right*2;
+            PathsManager.Instance.DrawPath(this, Destination);
+            LineRenderer.SetColors(Color.grey, Color.grey);
+            LineRenderer.SetWidth(0.05f, 0.05f);
         }
 
 

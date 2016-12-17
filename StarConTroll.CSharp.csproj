@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\LineScript.cs" />
     <Compile Include="Assets\Scripts\Missile.cs" />
+    <Compile Include="Assets\Scripts\PathsManager.cs" />
     <Compile Include="Assets\Scripts\Ship.cs" />
     <Compile Include="Assets\Scripts\SpaceObject.cs" />
     <Compile Include="Assets\Scripts\TurnManager.cs" />
