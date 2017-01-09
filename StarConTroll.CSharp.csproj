@@ -65,7 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\ButtonScripts.cs" />
+    <Compile Include="Assets\Scripts\EndButtonScripts.cs" />
     <Compile Include="Assets\Scripts\ConfigurationManager.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\LineScript.cs" />

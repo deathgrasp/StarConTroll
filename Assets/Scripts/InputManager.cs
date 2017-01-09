@@ -24,8 +24,11 @@ namespace Assets.Scripts
             {
                 Marker.SetActive(true);
                 Marker.transform.position = Ship.transform.position;
-            var mousePointer = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                PathsManager.Instance.DrawPath(Ship, mousePointer, LineRenderer);
+                var mousePointer = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                if (LineRenderer.enabled)
+                {
+                    PathsManager.Instance.DrawPath(Ship, mousePointer, LineRenderer);
+                }
             }
             else
             {
@@ -42,7 +45,7 @@ namespace Assets.Scripts
         }
 
 
-        
+
 
         private Missile _missilePrefab;
 
@@ -54,8 +57,8 @@ namespace Assets.Scripts
         void OnLeftMouseClick()
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-        
-            if (hit.collider!=null)
+
+            if (hit.collider != null)
             {
                 var clicked = hit.collider.GetComponent<Ship>();
                 if (clicked != null)
@@ -75,8 +78,9 @@ namespace Assets.Scripts
         void OnRightMouseClick()
         {
             Vector3 mousePointer = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePointer.z = 0;
             Ship.SetDestination(mousePointer);
-            PathsManager.Instance.DrawPath(Ship,mousePointer);
+            PathsManager.Instance.DrawPath(Ship, mousePointer);
         }
     }
 }
