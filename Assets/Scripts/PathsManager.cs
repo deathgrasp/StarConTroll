@@ -40,7 +40,7 @@ namespace Assets.Scripts
             }
 
             //add points to the linerenderer
-            lineRenderer.SetVertexCount(_pathPointStack.Count);
+            lineRenderer.numPositions=_pathPointStack.Count;
             lineRenderer.SetPositions(_pathPointStack.ToArray());
 
 

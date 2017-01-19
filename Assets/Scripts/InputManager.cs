@@ -13,8 +13,8 @@ namespace Assets.Scripts
         // Use this for initialization
         void Start()
         {
-            LineRenderer.SetColors(Color.red, Color.yellow);
-            LineRenderer.SetWidth(0.1f, 0.1f);
+            LineRenderer.startColor=Color.red;
+            LineRenderer.endColor=Color.yellow;
         }
 
         // Update is called once per frame

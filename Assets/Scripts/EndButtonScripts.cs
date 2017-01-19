@@ -7,7 +7,7 @@ namespace Assets.Scripts
         public void ResumeTime()
         {
             Time.timeScale = 1;
-            TurnManager.Instance.ToNextTurn = ConfigurationManager.Instance.TurnDuration;  
+            TurnManager.Instance.ToNextTurn = (int)(ConfigurationManager.Instance.TurnDuration/ConfigurationManager.Instance.FixedUpdateStep);  
             print("look at me    "+TurnManager.Instance.ToNextTurn);
         }
 

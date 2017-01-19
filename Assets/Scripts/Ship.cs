@@ -10,8 +10,10 @@ namespace Assets.Scripts
             Destination = transform.position;
             MoveSpeed = MoveSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
             TurnSpeed = TurnSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
-            LineRenderer.SetColors(Color.green, Color.blue);
-            LineRenderer.SetWidth(0.05f, 0.05f);
+            LineRenderer.startColor = Color.green;
+            LineRenderer.endColor = Color.blue;
+            LineRenderer.startWidth = 0.05f;
+            LineRenderer.endWidth = 0.05f;
             PathsManager.Instance.DrawPath(this, Destination);
         }
 

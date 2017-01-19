@@ -6,22 +6,18 @@ namespace Assets.Scripts
     public class TurnManager : UnitySingleton<TurnManager>
     {
 
-        public float ToNextTurn;
+        public int ToNextTurn=1;
         // Use this for initialization
         void Start ()
         {
-            ToNextTurn = ConfigurationManager.Instance.FixedUpdateStep;
-            ToNextTurn = 0.02f;
-            print(ToNextTurn);
+            ToNextTurn = 1;
         }
 
-        private int counter = 0;
         // Update is called once per frame
         void FixedUpdate ()
         {
-            var step = ConfigurationManager.Instance.FixedUpdateStep;
-            ToNextTurn -= step;
-            if (ToNextTurn-step<0)
+            ToNextTurn -= 1;
+            if (ToNextTurn-1<0)
             {
                 Time.timeScale = 0;
             }
