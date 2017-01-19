@@ -56,7 +56,8 @@
      <Compile Include="Assets\Scripts\SpaceObject.cs" />
      <Compile Include="Assets\Scripts\TurnManager.cs" />
      <Compile Include="Assets\Scripts\TurnTimer.cs" />
-     <Compile Include="Assets\Test suits\ShipTest.cs" />
+     <Compile Include="Assets\Test suits\SetTestSpeed.cs" />
+     <Compile Include="Assets\Test suits\TestSuit.cs" />
      <Compile Include="Assets\UnityTestTools\Assertions\AssertionComponent.cs" />
      <Compile Include="Assets\UnityTestTools\Assertions\AssertionException.cs" />
      <Compile Include="Assets\UnityTestTools\Assertions\Assertions.cs" />
