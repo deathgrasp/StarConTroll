@@ -4,6 +4,8 @@ namespace Assets.Scripts
 {
     public class Ship : SpaceObject
     {
+        public int Owner {get; set;}
+
         // Use this for initialization
         void Start()
         {

@@ -5,7 +5,7 @@ namespace Assets.Scripts
 {
     public class TurnManager : UnitySingleton<TurnManager>
     {
-
+        // TODO: merge this class into GameWorld?
         public int ToNextTurn=1;
         // Use this for initialization
         void Start ()
@@ -17,9 +17,9 @@ namespace Assets.Scripts
         void FixedUpdate ()
         {
             ToNextTurn -= 1;
-            if (ToNextTurn-1<0)
+            if (ToNextTurn < 1)
             {
-                Time.timeScale = 0;
+                GameWorld.Instance.OnExecutionPhaseEnd();
             }
             // float a = Mathf.Round(ToNextTurn*10000)/10000; //truncation of float in order to avoid rounding issue
         }
