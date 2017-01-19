@@ -33,25 +33,25 @@ namespace Assets.Scripts
             }
             else
             {
-                transform.rotation = ShipRotation(destination);
+                RotateShipTowards(destination,TurnSpeed);
                 //move forward
                 transform.position += ShipMovement(); //move forward (right = x axis = red arrow = forward)
             }
 
         }
         /// <summary>
-        /// Computes the ship's new rotation
+        /// Computes and sets the ship's new rotation, and returns the new rotation
         /// </summary>
         /// <returns>Rotation after a single frame</returns>
-        Quaternion ShipRotation(Vector2 destination)
+        public Quaternion RotateShipTowards(Vector2 destination, float maxTurnAngle)
         {
             //Find rotation and adjust angle
             Vector2 vectorToTarget = destination - (Vector2)transform.position;
             float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
             Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, maxTurnAngle);
             //return new rotation
-            return Quaternion.RotateTowards(transform.rotation, rotation, TurnSpeed);
+            return transform.rotation;
         }
         /// <summary>
         /// Computes the new ship's location
@@ -59,6 +59,7 @@ namespace Assets.Scripts
         /// <returns>New ships location</returns>
         Vector3 ShipMovement()
         {
+            // add protetion levle (private/public) to this function
             return MoveSpeed * transform.right;
         }
 
