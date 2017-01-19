@@ -41,9 +41,8 @@ namespace Assets.Scripts
 
             //add points to the linerenderer
             lineRenderer.numPositions=_pathPointStack.Count;
-            lineRenderer.SetPositions(_pathPointStack.ToArray());
-
-
+            lineRenderer.SetPositions(_pathPointStack.Reverse().ToArray());
+            
             //return to initial state
             so.transform.position = initialPosition;
             so.transform.rotation = initialRotation;

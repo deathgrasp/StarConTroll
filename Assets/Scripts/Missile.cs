@@ -15,6 +15,7 @@ namespace Assets.Scripts
             Destination.z = 0;
             transform.position += transform.right*2;
             PathsManager.Instance.DrawPath(this, Destination);
+            print("start!");
             LineRenderer.startColor = Color.grey;
             LineRenderer.endColor = Color.black;
             LineRenderer.startWidth = 0.05f;
