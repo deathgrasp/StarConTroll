@@ -4,7 +4,7 @@ namespace Assets.Scripts
 {
     public class Ship : SpaceObject
     {
-        public int Owner {get; set;}
+        public int Owner;//Rani: TODO: change to get/set. Make sure name tells us the owner
 
         // Use this for initialization
         void Start()

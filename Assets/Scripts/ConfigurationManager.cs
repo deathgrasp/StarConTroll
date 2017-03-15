@@ -1,4 +1,5 @@
-﻿using Assets.Utils;
+﻿using System;
+using Assets.Utils;
 
 namespace Assets.Scripts
 {
@@ -8,5 +9,7 @@ namespace Assets.Scripts
         public float TurnDuration = 3f;
         public float FloatingPoint = 0.00001f;
         public float TestTimeScale = 100f;
+        public Boolean VersusAI = true;
+        public float ScrollZoomSpeed = 2f;//mouse wheel zoom speed
     }
 }
