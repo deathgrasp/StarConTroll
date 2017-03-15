@@ -8,7 +8,7 @@ namespace Assets.Test_suits
     {
         void Start()
         {
-            Time.timeScale = ConfigurationManager.Instance.TestTimeScale;
+            Time.timeScale = ConfigurationManager.TestTimeScale;
         }
     }
 }

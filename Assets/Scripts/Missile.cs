@@ -8,14 +8,13 @@ namespace Assets.Scripts
         private bool _destroyNextFrame;
         public int Damage;
         // Use this for initialization
-        void Start ()
+        void Awake ()
         {
-            MoveSpeed = MoveSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
-            TurnSpeed = TurnSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
+            MoveSpeed = MoveSpeedSec * ConfigurationManager.FixedUpdateStep;
+            TurnSpeed = TurnSpeedSec * ConfigurationManager.FixedUpdateStep;
             Destination.z = 0;
             transform.position += transform.right*2;
             PathsManager.Instance.DrawPath(this, Destination);
-            print("start!");
             LineRenderer.startColor = Color.grey;
             LineRenderer.endColor = Color.black;
             LineRenderer.startWidth = 0.05f;

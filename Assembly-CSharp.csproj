@@ -46,6 +46,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Ability.cs" />
+     <Compile Include="Assets\Scripts\Ability_ShootMissile.cs" />
+     <Compile Include="Assets\Scripts\Command.cs" />
+     <Compile Include="Assets\Scripts\Command_ShootMissile.cs" />
      <Compile Include="Assets\Scripts\ConfigurationManager.cs" />
      <Compile Include="Assets\Scripts\GameWorld.cs" />
      <Compile Include="Assets\Scripts\LineScript.cs" />

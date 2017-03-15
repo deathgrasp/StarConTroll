@@ -13,7 +13,7 @@ namespace Assets.Scripts
         // Update is called once per frame
         void Update ()
         {
-            Text.text = TurnManager.Instance.ToNextTurn.ToString();
+            Text.text = TurnManager.Instance.CurrentUpdate.ToString();
         }
     }
 }
