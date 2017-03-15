@@ -15,10 +15,10 @@ namespace Assets.Scripts
         public static float BlastRadius=2;
         public float Lifetime;
         // Use this for initialization
-        void Start ()
+        void Awake ()
         {
-            MoveSpeed = MoveSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
-            TurnSpeed = TurnSpeedSec * ConfigurationManager.Instance.FixedUpdateStep;
+            MoveSpeed = MoveSpeedSec * ConfigurationManager.FixedUpdateStep;
+            TurnSpeed = TurnSpeedSec * ConfigurationManager.FixedUpdateStep;
             Destination.z = 0;
             transform.position += transform.right*2;
             PathsManager.Instance.DrawPath(this, Destination);

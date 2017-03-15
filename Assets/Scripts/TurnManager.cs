@@ -6,22 +6,22 @@ namespace Assets.Scripts
     public class TurnManager : UnitySingleton<TurnManager>
     {
         // TODO: merge this class into GameWorld?
-        public int ToNextTurn=0;
+        public int CurrentUpdate = -1; // TODO: add getter/setter
         // Use this for initialization
         void Awake ()
         {
-            ToNextTurn = 0;
-            GameWorld.Instance.OnExecutionPhaseEnd();
+            CurrentUpdate = -1;
         }
 
         // Update is called once per frame
         void FixedUpdate ()
         {
-            if (ToNextTurn < 1)
+            CurrentUpdate += 1;
+            if (CurrentUpdate > ConfigurationManager.UpdatesInTurn-1) // TODO: should it be UpdatesInTurn-1? or just UpdatesInTurn?
             {
                 GameWorld.Instance.OnExecutionPhaseEnd();
             }
-            // float a = Mathf.Round(ToNextTurn*10000)/10000; //truncation of float in order to avoid rounding issue
+            // float a = Mathf.Round(CurrentUpdate*10000)/10000; //truncation of float in order to avoid rounding issue
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Utils;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts
@@ -9,18 +10,27 @@ namespace Assets.Scripts
     {
         public Ship Ship1; // TODO: this is temporary! will be a list of all the ships of player 1
         public Ship Ship2; // TODO: this is temporary! will be a list of all the ships of player 2
+        public Button[] CommandUiIcons = new Button[4]; // TODO: this is temporary! these icons will be created on the fly, and won't be always 4
         public LineRenderer LineRenderer;
         public GameObject Marker;
         public bool ExecutionPhase;
         private Ship currentSelection;
         public Player currentPlayer;
         public Player[] Players;
+        private Ability currentAbility;
+        public int currentPlayer = Player.PLAYER_1;
         private bool isPlayer1Done = false;
         private bool isPlayer2Done = false;
         public Camera Camera;
         public List<GameObject> DisableInExecutionPhase = new List<GameObject>();
         private Vector3 _panStart;
         private Vector3 _panTarget;
+        private Missile _missilePrefab;
+        private Missile MissilePrefab
+        {
+            get { return _missilePrefab ?? (_missilePrefab = Resources.Load<Missile>("Missile")); }
+        }
+
         // Use this for initialization
         void Awake()
         {
@@ -36,6 +46,10 @@ namespace Assets.Scripts
             }
             DisableInExecutionPhase.Add(GameObject.Find("EndTurn"));
             _panTarget = Camera.transform.position;
+            Ship1.Owner = Player.PLAYER_1;
+            Ship2.Owner = Player.PLAYER_2;
+            SetSelection(Ship1);
+            SwitchToPlanningPhase();
         }
 
         // Update is called once per frame
@@ -119,24 +133,35 @@ namespace Assets.Scripts
                 var clicked = hit.collider.GetComponent<Ship>();
                 if (clicked != null && currentPlayer.Number == clicked.Owner)
                 {
-                    currentSelection = clicked;
+                    SetSelection(clicked);
                 }
             }
             else
             {
-                var mousePointer = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                var missile = Instantiate(Missile.MissilePrefab, currentSelection.transform.position, currentSelection.transform.rotation) as Missile;
-
-                missile.Destination = mousePointer;
+                Command command = Command_ShootMissile.Create(currentSelection, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                currentSelection.SetCommand(currentSelection.GetUnassignedCommand(), command);
+                updateCommandQueueUI();
             }
         }
 
 
         private void SetSelection(Ship ship)
         {
-            if (ship.Owner == currentPlayer.Number)
+            if (ship != null && ship.Owner == currentPlayer) 
             {
                 currentSelection = ship;
+                updateCommandQueueUI();
+            }
+        }
+
+
+        private void updateCommandQueueUI()
+        {
+            Command[] commandQueue = currentSelection.GetCommandQueue();
+            for (int i=0; i < commandQueue.Length; i++)
+            {
+                if (commandQueue[i] == null) { CommandUiIcons[i].GetComponent<Image>().color = Color.white; }
+                else { CommandUiIcons[i].GetComponent<Image>().color = Color.magenta; }
             }
         }
 
@@ -152,26 +177,17 @@ namespace Assets.Scripts
 
         public void OnEndTurnClick()
         {
-            if (currentPlayer == Players[0])
+            if (currentPlayer == Player.PLAYER_1) 
             {
                 isPlayer1Done = true;
-                currentPlayer = Players[1]; // TODO: this will change we will stop using hot-seat playerd
-                currentSelection = Ship2;
-                if (currentPlayer.IsHuman == false)
-                {
-                    var target = ((AIPlayer)currentPlayer).IssueOrders(Ship2);
-                    var myMissile = Instantiate(Missile.MissilePrefab, Ship2.transform.position, Ship2.transform.rotation) as Missile;
-                    myMissile.Destination = target;
-                    isPlayer2Done = true;
-                    currentPlayer = Players[0]; // TODO: this will change we will stop using hot-seat playerd
-                    currentSelection = Ship1;
-                }
+                currentPlayer = Player.PLAYER_2; // TODO: this will change we will stop using hot-seat playerd
+                SetSelection(Ship2);
             }
-            else if (currentPlayer == Players[1])
-            {
-                isPlayer2Done = true;
-                currentPlayer = Players[0]; // TODO: this will change we will stop using hot-seat playerd
-                currentSelection = Ship1;
+            else if (currentPlayer == Player.PLAYER_2) 
+            { 
+                isPlayer2Done = true; 
+                currentPlayer = Player.PLAYER_1; // TODO: this will change we will stop using hot-seat playerd
+                SetSelection(Ship1);
             }
 
             // resolve turn if both players finished issueing orders
@@ -192,8 +208,10 @@ namespace Assets.Scripts
             Time.timeScale = 0;
             isPlayer1Done = false;
             isPlayer2Done = false;
-            currentPlayer = Players[0];
-            currentSelection = Ship1;
+            currentPlayer = Player.PLAYER_1;
+            SetSelection(Ship1);
+
+            // TODO: change this to method "showUI"
             foreach (var o in DisableInExecutionPhase)
             {
                 o.SetActive(true);
@@ -205,17 +223,18 @@ namespace Assets.Scripts
         {
             Marker.SetActive(false);
             TurnOffMouseLineRenderer();
-            TurnOffAllGuides();
+            TurnOffAllGuides(); // TODO: what is this? is it the same as the loop below?
+
+            // TODO: change this to method "hideUI"
             foreach (var o in DisableInExecutionPhase)
             {
                 o.SetActive(false);
             }
             // TODO: remove all the ships' and projectiles trajectories UI
             ExecutionPhase = true;
-            currentSelection = null;
+            SetSelection(null);
             Time.timeScale = 1;
-            TurnManager.Instance.ToNextTurn = (int)(ConfigurationManager.Instance.TurnDuration / ConfigurationManager.Instance.FixedUpdateStep);
-            //print("look at me    " + TurnManager.Instance.ToNextTurn);
+            TurnManager.Instance.CurrentUpdate = 0; // TODO: should it be -1?
         }
 
 

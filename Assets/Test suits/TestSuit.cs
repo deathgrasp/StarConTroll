@@ -19,7 +19,7 @@ namespace Assets.Test_suits
         private int _counter = 0;
         void Start()
         {
-            CallTest = ConfigurationManager.Instance.TurnDuration;
+            CallTest = ConfigurationManager.TurnDuration;
             switch (Option)//makes sure stuff like destination is always correct, instead of counting on unity's Start build order.
             {
                 case 3://tests missile damage ship by missile damage amount
@@ -60,7 +60,7 @@ namespace Assets.Test_suits
         {
 
             CallTest -= Time.deltaTime;
-            if (CallTest - ConfigurationManager.Instance.FloatingPoint <= 0)
+            if (CallTest - ConfigurationManager.FloatingPoint <= 0)
             {
                 switch (Option)
                 {
