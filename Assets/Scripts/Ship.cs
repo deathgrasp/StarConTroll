@@ -4,7 +4,7 @@ namespace Assets.Scripts
 {
     public class Ship : SpaceObject
     {
-        public int Owner {get; set;}
+        public Player Owner {get; set;}
         private Command[] CommandQueue;
 
         // Use this for initialization

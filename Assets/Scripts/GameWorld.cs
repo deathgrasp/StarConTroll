@@ -16,9 +16,11 @@ namespace Assets.Scripts
         public bool ExecutionPhase;
         private Ship currentSelection;
         public Player currentPlayer;
-        public Player[] Players;
+        //public Player[] Players;
+        private Player player1;
+        private Player player2;
+
         private Ability currentAbility;
-        public int currentPlayer = Player.PLAYER_1;
         private bool isPlayer1Done = false;
         private bool isPlayer2Done = false;
         public Camera Camera;
@@ -32,22 +34,26 @@ namespace Assets.Scripts
         }
 
         // Use this for initialization
-        void Awake()
+        void Start()
         {
             currentSelection = Ship1;
             Ship1.RotateShipTowards(Vector3.zero, 360);
             Ship2.RotateShipTowards(Vector3.zero, 360);
             LineRenderer.startColor = Color.red;
             LineRenderer.endColor = Color.yellow;
-            Players = new[] { new Player(1), new Player(2) };
+            player1=new Player(1);
             if (ConfigurationManager.Instance.VersusAI)
             {
-                Players[1] = new AIPlayer(2);
+                player2 = new AIPlayer(2);
+            }
+            else
+            {
+                player2=new Player(2);
             }
             DisableInExecutionPhase.Add(GameObject.Find("EndTurn"));
             _panTarget = Camera.transform.position;
-            Ship1.Owner = Player.PLAYER_1;
-            Ship2.Owner = Player.PLAYER_2;
+            Ship1.Owner = player1;
+            Ship2.Owner = player2;
             SetSelection(Ship1);
             SwitchToPlanningPhase();
         }
@@ -122,7 +128,7 @@ namespace Assets.Scripts
         }
         private void MouseScroll(float amount)
         {
-            Camera.orthographicSize -= amount * ConfigurationManager.Instance.ScrollZoomSpeed;
+            Camera.orthographicSize -= amount * ConfigurationManager.ScrollZoomSpeed;
         }
         private void OnLeftMouseClick()
         {
@@ -131,7 +137,7 @@ namespace Assets.Scripts
             if (hit.collider != null)
             {
                 var clicked = hit.collider.GetComponent<Ship>();
-                if (clicked != null && currentPlayer.Number == clicked.Owner)
+                if (clicked != null && currentPlayer.Number == clicked.Owner.Number)
                 {
                     SetSelection(clicked);
                 }
@@ -160,8 +166,14 @@ namespace Assets.Scripts
             Command[] commandQueue = currentSelection.GetCommandQueue();
             for (int i=0; i < commandQueue.Length; i++)
             {
-                if (commandQueue[i] == null) { CommandUiIcons[i].GetComponent<Image>().color = Color.white; }
-                else { CommandUiIcons[i].GetComponent<Image>().color = Color.magenta; }
+                if (commandQueue[i] == null)
+                {
+                    CommandUiIcons[i].GetComponent<Image>().color = Color.white;
+                }
+                else
+                {
+                    CommandUiIcons[i].GetComponent<Image>().color = Color.magenta;
+                }
             }
         }
 
@@ -177,16 +189,16 @@ namespace Assets.Scripts
 
         public void OnEndTurnClick()
         {
-            if (currentPlayer == Player.PLAYER_1) 
+            if (currentPlayer == player1) 
             {
                 isPlayer1Done = true;
-                currentPlayer = Player.PLAYER_2; // TODO: this will change we will stop using hot-seat playerd
+                currentPlayer = player2; // TODO: this will change we will stop using hot-seat playerd
                 SetSelection(Ship2);
             }
-            else if (currentPlayer == Player.PLAYER_2) 
+            else if (currentPlayer == player2) 
             { 
                 isPlayer2Done = true; 
-                currentPlayer = Player.PLAYER_1; // TODO: this will change we will stop using hot-seat playerd
+                currentPlayer = player1; // TODO: this will change we will stop using hot-seat playerd
                 SetSelection(Ship1);
             }
 
@@ -208,7 +220,7 @@ namespace Assets.Scripts
             Time.timeScale = 0;
             isPlayer1Done = false;
             isPlayer2Done = false;
-            currentPlayer = Player.PLAYER_1;
+            currentPlayer = player1;
             SetSelection(Ship1);
 
             // TODO: change this to method "showUI"

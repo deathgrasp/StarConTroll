@@ -29,7 +29,7 @@ namespace Assets.Scripts
             rotations[0].Add(startRotation);
             locations[0].Add(startLoc);
             rotations[0].Add(startRotation);
-            for (int i = 0; i*10 < ConfigurationManager.Instance.TurnDuration/ConfigurationManager.Instance.FixedUpdateStep; i++)
+            for (int i = 0; i*10 < ConfigurationManager.UpdatesInTurn; i++)
             {
                 var newLocs = new List<Vector3>();
                 var newRots = new List<Quaternion>();
@@ -72,7 +72,7 @@ namespace Assets.Scripts
                 missilesStartRotation.Add(missiles[i].transform.rotation);
             }
             var toRemove=new List<Vector3>();
-            for (int i = 0; i < ConfigurationManager.Instance.TurnDuration / ConfigurationManager.Instance.FixedUpdateStep; i++)
+            for (int i = 0; i < ConfigurationManager.UpdatesInTurn; i++)
             {
                 foreach (var missile in missiles)
                 {

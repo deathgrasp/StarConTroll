@@ -31,7 +31,7 @@ namespace Assets.Scripts
         // Update is called once per frame
         void FixedUpdate()
         {
-            if (_destroyNextFrame||Lifetime<=0)
+            if (_destroyNextFrame || Lifetime <= 0)
             {
                 Destroy(gameObject);
             }
@@ -40,7 +40,7 @@ namespace Assets.Scripts
                 transform.position = Destination;
                 DestroyNextFrame();
             }
-            Lifetime -= ConfigurationManager.Instance.FixedUpdateStep;
+            Lifetime -= ConfigurationManager.FixedUpdateStep;
             Move(Destination);
         }
 
