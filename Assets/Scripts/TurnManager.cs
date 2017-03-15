@@ -17,8 +17,6 @@ namespace Assets.Scripts
         // Update is called once per frame
         void FixedUpdate ()
         {
-            print("update");
-            ToNextTurn -= 1;
             if (ToNextTurn < 1)
             {
                 GameWorld.Instance.OnExecutionPhaseEnd();

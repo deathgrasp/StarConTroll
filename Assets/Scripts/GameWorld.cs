@@ -215,7 +215,7 @@ namespace Assets.Scripts
             currentSelection = null;
             Time.timeScale = 1;
             TurnManager.Instance.ToNextTurn = (int)(ConfigurationManager.Instance.TurnDuration / ConfigurationManager.Instance.FixedUpdateStep);
-            print("look at me    " + TurnManager.Instance.ToNextTurn);
+            //print("look at me    " + TurnManager.Instance.ToNextTurn);
         }
 
 
