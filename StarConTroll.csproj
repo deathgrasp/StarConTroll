@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\PathsManager.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\Ship.cs" />
+    <Compile Include="Assets\Scripts\ShipSpawner.cs" />
     <Compile Include="Assets\Scripts\SpaceObject.cs" />
     <Compile Include="Assets\Scripts\TurnManager.cs" />
     <Compile Include="Assets\Scripts\TurnTimer.cs" />

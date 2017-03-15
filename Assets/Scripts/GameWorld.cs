@@ -201,9 +201,8 @@ namespace Assets.Scripts
                 currentPlayer = player1; // TODO: this will change we will stop using hot-seat playerd
                 SetSelection(Ship1);
             }
-
             // resolve turn if both players finished issueing orders
-            if (isPlayer1Done && isPlayer2Done) { SwitchToExecutionPhase(); }
+            if (!ExecutionPhase && isPlayer1Done && isPlayer2Done) { SwitchToExecutionPhase(); }
         }
 
 
@@ -276,7 +275,9 @@ namespace Assets.Scripts
         {
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("SpaceObject"))
             {
-                obj.GetComponent<SpaceObject>().LineRenderer.enabled = true;
+                SpaceObject so = obj.GetComponent<SpaceObject>();
+                so.LineRenderer.enabled = true;
+                PathsManager.Instance.DrawPath(so,so.Destination,so.LineRenderer);
             }
         }
 
