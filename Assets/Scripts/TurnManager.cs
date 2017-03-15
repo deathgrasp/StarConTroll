@@ -6,16 +6,18 @@ namespace Assets.Scripts
     public class TurnManager : UnitySingleton<TurnManager>
     {
         // TODO: merge this class into GameWorld?
-        public int ToNextTurn=1;
+        public int ToNextTurn=0;
         // Use this for initialization
-        void Start ()
+        void Awake ()
         {
-            ToNextTurn = 1;
+            ToNextTurn = 0;
+            GameWorld.Instance.OnExecutionPhaseEnd();
         }
 
         // Update is called once per frame
         void FixedUpdate ()
         {
+            print("update");
             ToNextTurn -= 1;
             if (ToNextTurn < 1)
             {
