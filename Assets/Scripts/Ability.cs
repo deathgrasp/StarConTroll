@@ -5,13 +5,17 @@ namespace Assets.Scripts
 {
 	public abstract class Ability : ScriptableObject {
 
-		protected UnityEngine.Object icon; // ability panel icon
-		protected UnityEngine.Object hotkey;
-		protected Type command;
+		protected Sprite icon = null; // ability panel icon
+		protected UnityEngine.Object hotkey = null;
+		protected UnityEngine.Object tooltip = null;
 
-		public void Activate()
-		{
-			// TODO: this should create a new command object through he static "create" function and add it to the ship's queue
-		}
+		
+		public abstract void Execute(CommandParams commandParams);
+
+
+		public Sprite GetIcon()
+        {
+            return icon;
+        }
 	}
 }

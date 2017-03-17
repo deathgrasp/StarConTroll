@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Assets.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,15 +11,14 @@ namespace Assets.Scripts
         public Ship Ship1; // TODO: this is temporary! will be a list of all the ships of player 1
         public Ship Ship2; // TODO: this is temporary! will be a list of all the ships of player 2
         public Button[] CommandUiIcons = new Button[4]; // TODO: this is temporary! these icons will be created on the fly, and won't be always 4
+        public Button[] AbilityUiIcons = new Button[4]; // TODO: this is temporary! these icons will be created on the fly, and won't be always 4
         public LineRenderer LineRenderer;
         public GameObject Marker;
         public bool ExecutionPhase;
         private Ship currentSelection;
         public Player currentPlayer;
-        //public Player[] Players;
         private Player player1;
         private Player player2;
-
         private Ability currentAbility;
         private bool isPlayer1Done = false;
         private bool isPlayer2Done = false;
@@ -110,6 +109,7 @@ namespace Assets.Scripts
             }
         }
 
+
         private void OnMiddleMouseClickDown()
         {
             var change = Vector3.zero;
@@ -122,16 +122,23 @@ namespace Assets.Scripts
             _panTarget += change;
         }
 
+
         private void OnMiddleMouseClickUp()
         {
             _panStart = Vector3.zero;
         }
+
+
         private void MouseScroll(float amount)
         {
             Camera.orthographicSize -= amount * ConfigurationManager.ScrollZoomSpeed;
         }
+
+
         private void OnLeftMouseClick()
         {
+            // TODO: if no ability selected -> this should do movement, else it should do the command-generating code (it's in the "else" block). right click should be ship & ability selection
+
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
             if (hit.collider != null)
@@ -144,7 +151,8 @@ namespace Assets.Scripts
             }
             else
             {
-                Command command = Command_ShootMissile.Create(currentSelection, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                CommandParams commandParams = new CommandParams(currentSelection, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                Command command = new Command(currentAbility, commandParams);
                 currentSelection.SetCommand(currentSelection.GetUnassignedCommand(), command);
                 updateCommandQueueUI();
             }
@@ -156,7 +164,9 @@ namespace Assets.Scripts
             if (ship != null && ship.Owner == currentPlayer) 
             {
                 currentSelection = ship;
+                currentAbility = ship.GetAbilities()[0]; // TODO: this is temp! this should initially be nothing (=movement)
                 updateCommandQueueUI();
+                updateSidePanelUI();
             }
         }
 
@@ -168,12 +178,24 @@ namespace Assets.Scripts
             {
                 if (commandQueue[i] == null)
                 {
+                    CommandUiIcons[i].GetComponent<Image>().sprite = null;
                     CommandUiIcons[i].GetComponent<Image>().color = Color.white;
                 }
                 else
                 {
+                    CommandUiIcons[i].GetComponent<Image>().sprite = commandQueue[i].GetAbility().GetIcon();
                     CommandUiIcons[i].GetComponent<Image>().color = Color.magenta;
                 }
+            }
+        }
+
+
+        private void updateSidePanelUI()
+        {
+            List<Ability> abilityList = currentSelection.GetAbilities();
+            for (int i=0; i < abilityList.Count; i++)
+            {
+                AbilityUiIcons[i].GetComponent<Image>().sprite = abilityList[i].GetIcon();
             }
         }
 

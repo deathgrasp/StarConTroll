@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace Assets.Scripts
 {
@@ -6,6 +7,7 @@ namespace Assets.Scripts
     {
         public Player Owner {get; set;}
         private Command[] CommandQueue;
+        private List<Ability> AbilityList = new List<Ability>();
 
         // Use this for initialization
         void Awake()
@@ -19,6 +21,9 @@ namespace Assets.Scripts
             LineRenderer.startWidth = 0.05f;
             LineRenderer.endWidth = 0.05f;
             PathsManager.Instance.DrawPath(this, Destination);
+
+            // add abilites to ship
+            AbilityList.Add(ScriptableObject.CreateInstance<Ability_ShootMissile>()); // TODO: change the entire ability list to components?
         }
 
         // Update is called once per frame
@@ -57,7 +62,13 @@ namespace Assets.Scripts
         }
 
 
-        // TODO: this is temp for iteration 1. go over and make robust
+        public List<Ability> GetAbilities()
+        {
+            return AbilityList;
+        }
+
+
+        // TODO: this is temp for iteration 1. go over and make robust (this is currently used whenever a new command is issued. it finds empty space on command queue nad returns it's index)
         public int GetUnassignedCommand()
         {
             for (int i=0; i<CommandQueue.Length; i++)
