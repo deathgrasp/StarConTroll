@@ -8,8 +8,8 @@ namespace Assets.Scripts
 {
     public class GameWorld : UnitySingleton<GameWorld>
     {
-        public Ship Ship1; // TODO: this is temporary! will be a list of all the ships of player 1
-        public Ship Ship2; // TODO: this is temporary! will be a list of all the ships of player 2
+        public List<Ship> P1Ships;
+        public List<Ship> P2Ships;
         public Button[] CommandUiIcons = new Button[4]; // TODO: this is temporary! these icons will be created on the fly, and won't be always 4
         public LineRenderer LineRenderer;
         public GameObject Marker;
@@ -33,28 +33,30 @@ namespace Assets.Scripts
             get { return _missilePrefab ?? (_missilePrefab = Resources.Load<Missile>("Missile")); }
         }
 
-        // Use this for initialization
-        void Start()
+        void Awake()
         {
-            currentSelection = Ship1;
-            Ship1.RotateShipTowards(Vector3.zero, 360);
-            Ship2.RotateShipTowards(Vector3.zero, 360);
-            LineRenderer.startColor = Color.red;
-            LineRenderer.endColor = Color.yellow;
-            player1=new Player(1);
+            player1 = new Player(1);
             if (ConfigurationManager.Instance.VersusAI)
             {
                 player2 = new AIPlayer(2);
             }
             else
             {
-                player2=new Player(2);
+                player2 = new Player(2);
             }
+            P1Ships = ShipSpawner.Instance.CreateShips(player1);
+            SetSelection(P1Ships[0]);
+            P2Ships = ShipSpawner.Instance.CreateShips(player2);
+
+        }
+        // Use this for initialization
+        void Start()
+        {
+            LineRenderer.startColor = Color.red;
+            LineRenderer.endColor = Color.yellow;
+            
             DisableInExecutionPhase.Add(GameObject.Find("EndTurn"));
             _panTarget = Camera.transform.position;
-            Ship1.Owner = player1;
-            Ship2.Owner = player2;
-            SetSelection(Ship1);
             SwitchToPlanningPhase();
         }
 
@@ -193,13 +195,13 @@ namespace Assets.Scripts
             {
                 isPlayer1Done = true;
                 currentPlayer = player2; // TODO: this will change we will stop using hot-seat playerd
-                SetSelection(Ship2);
+                SetSelection(P2Ships[0]);
             }
             else if (currentPlayer == player2) 
             { 
                 isPlayer2Done = true; 
                 currentPlayer = player1; // TODO: this will change we will stop using hot-seat playerd
-                SetSelection(Ship1);
+                SetSelection(P1Ships[0]);
             }
             // resolve turn if both players finished issueing orders
             if (!ExecutionPhase && isPlayer1Done && isPlayer2Done) { SwitchToExecutionPhase(); }
@@ -220,7 +222,7 @@ namespace Assets.Scripts
             isPlayer1Done = false;
             isPlayer2Done = false;
             currentPlayer = player1;
-            SetSelection(Ship1);
+            SetSelection(P1Ships[0]);
 
             // TODO: change this to method "showUI"
             foreach (var o in DisableInExecutionPhase)
