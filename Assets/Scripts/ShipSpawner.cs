@@ -34,12 +34,12 @@ namespace Assets.Scripts
         {
             var list = new List<Ship>();
             var spawnAmount = owner.Number==1 ? Player1Ships : Player2Ships;
-            var pos = owner.Number == 1 ? new Vector3(-spawnAmount, -spawnAmount/2, 0) : new Vector3(spawnAmount, -spawnAmount/2, 0);
+            var pos = owner.Number == 1 ? new Vector3(-spawnAmount, -spawnAmount, 0) : new Vector3(spawnAmount, -spawnAmount, 0);
             for (int i = 0; i < spawnAmount; i++)
             {
                 var ship=Instantiate(ShipPrefab, pos, Quaternion.FromToRotation(pos, Vector3.zero)) as Ship;
-                ship.RotateShipTowards(Vector3.zero,360);
-                pos+=Vector3.up;
+                ship.RotateShipTowards(new Vector3(0,pos.y,0),360);
+                pos+=Vector3.up*2;
                 ship.Owner = owner;
                 list.Add(ship);
                 ship.name="Ship #"+(i+1)+" of player "+owner.Number;
@@ -47,6 +47,7 @@ namespace Assets.Scripts
                         ? Player1MaterialPrefabPrefab
                         : Player2MaterialPrefabPrefab);
             }
+            GameWorld.Instance.Camera.orthographicSize += spawnAmount;
             return list;
         }
 
