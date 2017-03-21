@@ -52,6 +52,9 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Advertisements">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -67,6 +70,9 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Purchasing">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Purchasing.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.VR">
       <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
     </Reference>
@@ -79,7 +85,7 @@
     <Compile Include="Assets\Scripts\Ability.cs" />
     <Compile Include="Assets\Scripts\Ability_ShootMissile.cs" />
     <Compile Include="Assets\Scripts\Command.cs" />
-    <Compile Include="Assets\Scripts\Command_ShootMissile.cs" />
+    <Compile Include="Assets\Scripts\CommandParams.cs" />
     <Compile Include="Assets\Scripts\ConfigurationManager.cs" />
     <Compile Include="Assets\Scripts\GameWorld.cs" />
     <Compile Include="Assets\Scripts\LineScript.cs" />
@@ -91,6 +97,7 @@
     <Compile Include="Assets\Scripts\SpaceObject.cs" />
     <Compile Include="Assets\Scripts\TurnManager.cs" />
     <Compile Include="Assets\Scripts\TurnTimer.cs" />
+    <Compile Include="Assets\Scripts\UICanvas.cs" />
     <Compile Include="Assets\Test suits\SetTestSpeed.cs" />
     <Compile Include="Assets\Test suits\TestSuit.cs" />
     <Compile Include="Assets\UnityTestTools\Assertions\AssertionComponent.cs" />
