@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 namespace Assets.Scripts
@@ -8,11 +9,13 @@ namespace Assets.Scripts
         public Player Owner {get; set;}
         private Command[] CommandQueue;
         private List<Ability> AbilityList = new List<Ability>();
+        private Image[] CommandUiIcons; // TODO: this should be moved to the "ShipUI" class later
 
         // Use this for initialization
         void Awake()
         {
             CommandQueue = new Command[4]; // TODO: later change '4' to general, per-ship amount
+            CommandUiIcons = new Image[4]; // TODO: later change '4' to general, per-ship amount. also this should be moved to the "ShipUI" class later
             Destination = transform.position;
             MoveSpeed = MoveSpeedSec * ConfigurationManager.FixedUpdateStep;
             TurnSpeed = TurnSpeedSec * ConfigurationManager.FixedUpdateStep;
@@ -21,6 +24,11 @@ namespace Assets.Scripts
             LineRenderer.startWidth = 0.05f;
             LineRenderer.endWidth = 0.05f;
             PathsManager.Instance.DrawPath(this, Destination);
+
+            // TODO: pack the linerender and the ability icons shown on the path, and every other UI item into a new class "ShipUI"
+            //Image newImage = Instantiate(commandUiIconPrefab, UICanvas.Instance);
+            //Image[0] = newImage;
+        	//newButton.transform.SetParent(newCanvas.transform, false);
 
             // add abilites to ship
             AbilityList.Add(ScriptableObject.CreateInstance<Ability_ShootMissile>()); // TODO: change the entire ability list to components?

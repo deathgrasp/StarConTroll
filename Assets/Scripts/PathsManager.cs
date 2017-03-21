@@ -19,6 +19,7 @@ namespace Assets.Scripts
                 _helperStack.Push(new Vector3());
             }
         }
+        
         public void DrawPath(SpaceObject so, Vector3 destination, LineRenderer lineRenderer=null)
         {
             ClearStack();

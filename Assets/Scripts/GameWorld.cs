@@ -206,6 +206,7 @@ namespace Assets.Scripts
             mousePointer.z = 0;
             currentSelection.SetDestination(mousePointer);
             PathsManager.Instance.DrawPath(currentSelection, mousePointer);
+            print(currentSelection.LineRenderer.numPositions);
         }
 
 
