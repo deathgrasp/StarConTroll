@@ -12,7 +12,7 @@ namespace Assets.Scripts
         public CircleCollider2D CircleCollider2D;
         private bool _destroyNextFrame;
         public int Damage;
-        public static float BlastRadius=2;
+        public float BlastRadius=2;
         public float Lifetime;
         // Use this for initialization
         void Awake ()

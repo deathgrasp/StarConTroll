@@ -185,6 +185,7 @@ MonoBehaviour:
   LineRenderer: {fileID: 120000011740700900}
   CircleCollider2D: {fileID: 58000012576721940}
   Damage: 5
+  BlastRadius: 2
   Lifetime: 10
 --- !u!120 &120000011740700900
 LineRenderer:

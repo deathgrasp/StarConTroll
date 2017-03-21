@@ -80,7 +80,7 @@ namespace Assets.Scripts
                 }
                 for (int j = 0; j < 1+(i/10); j++)
                 {
-                    toRemove.AddRange(from v in locations[j] from missile in missiles where ((v - missile.transform.position).sqrMagnitude < 1)||((v-missile.Destination).magnitude<Missile.BlastRadius) select v);//get all locations with distance of less than 1 from any missile
+                    toRemove.AddRange(from v in locations[j] from missile in missiles where ((v - missile.transform.position).sqrMagnitude < 1)||((v-missile.Destination).magnitude<2) select v);//get all locations with distance of less than 1 from any missile
                     //foreach (var v in locations[j])
                     //{
                     //    foreach (var missile in missiles)
@@ -110,13 +110,13 @@ namespace Assets.Scripts
             }
             Vector3 destination;
             //ship.Destination;
-            if (GameWorld.Instance.Ship1.LineRenderer.numPositions>100)
+            if (GameWorld.Instance.P1Ships[0].LineRenderer.numPositions>100)
             {
-                destination = GameWorld.Instance.Ship1.LineRenderer.GetPosition(100);
+                destination = GameWorld.Instance.P1Ships[0].LineRenderer.GetPosition(100);
             }
             else
             {
-                destination = GameWorld.Instance.Ship1.transform.position;
+                destination = GameWorld.Instance.P1Ships[0].transform.position;
             }
             return destination;
         }

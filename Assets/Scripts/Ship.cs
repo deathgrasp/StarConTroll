@@ -37,7 +37,6 @@ namespace Assets.Scripts
         // Update is called once per frame
         void FixedUpdate()
         {
-            if (TurnManager.Instance.CurrentUpdate == 0) print("moo");
             Move(Destination); // update movement
 
             // activate abilities from queue
