@@ -39,6 +39,9 @@ namespace Assets.Scripts
             }
 
         }
+
+
+        // TODO: why are there "ship" methods in SpaceObject? should be eitehr generalized, or in Ship
         /// <summary>
         /// Computes and sets the ship's new rotation, and returns the new rotation
         /// </summary>

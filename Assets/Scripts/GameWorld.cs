@@ -20,6 +20,7 @@ namespace Assets.Scripts
         private Player player1;
         private Player player2;
         private Ability currentAbility;
+        private int currentSegment = -1; // TODO: -1 means no segment is selected.
         private bool isPlayer1Done = false;
         private bool isPlayer2Done = false;
         public Camera Camera;
@@ -53,6 +54,11 @@ namespace Assets.Scripts
         {
             LineRenderer.startColor = Color.red;
             LineRenderer.endColor = Color.yellow;
+
+            for (int i=0; i < CommandUiIcons.Length; i++)
+            {
+                CommandUiIcons[i].GetComponent<SegmentButton>().SetIndex(i);
+            }
             
             DisableInExecutionPhase.Add(GameObject.Find("EndTurn"));
             _panTarget = Camera.transform.position;
@@ -78,7 +84,7 @@ namespace Assets.Scripts
                 TurnOnMouseLineRenderer();
             }
 
-            if (currentSelection)
+            if (currentSelection != null)
             {
                 Marker.SetActive(true);
                 Marker.transform.position = currentSelection.transform.position;
@@ -108,6 +114,18 @@ namespace Assets.Scripts
             else if (Input.GetMouseButtonUp(2))
             {
                 OnMiddleMouseClickUp();
+            }
+            handleKeys();
+        }
+
+
+        private void handleKeys()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                SetSelectedAbility(null);
+                SetSelection(null);
+                SetSelectedSegment(-1); // TODO: turn '-1' from magic number to a named const
             }
         }
 
@@ -139,8 +157,7 @@ namespace Assets.Scripts
 
         private void OnLeftMouseClick()
         {
-            // TODO: if no ability selected -> this should do movement, else it should do the command-generating code (it's in the "else" block). right click should be ship & ability selection
-
+            // left mouse-click is used for selection of units and abilities
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
             if (hit.collider != null)
@@ -151,12 +168,37 @@ namespace Assets.Scripts
                     SetSelection(clicked);
                 }
             }
+        }
+
+
+        private void OnRightMouseClick()
+        {
+            // right mouse-click is used for issueing orders to current selection
+            Vector3 mousePointer = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePointer.z = 0;
+
+            // if no ability is selected - do movement
+            if (currentAbility == null)
+            {
+                currentSelection.SetDestination(mousePointer);
+                currentSelection.DrawPathUI();
+            }
+            // if ability is selected then issue command
             else
             {
-                CommandParams commandParams = new CommandParams(currentSelection, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                CommandParams commandParams = new CommandParams(currentSelection, mousePointer);
                 Command command = new Command(currentAbility, commandParams);
-                currentSelection.SetCommand(currentSelection.GetUnassignedCommand(), command);
+                if (currentSegment == -1)
+                {
+                    currentSelection.SetCommand(currentSelection.GetUnassignedCommand(), command);
+                }
+                else
+                {
+                    currentSelection.SetCommand(currentSegment, command);
+                    currentSegment = -1; // TODO: no magic numbers!
+                }
                 updateCommandQueueUI();
+                SetSelectedAbility(null);
             }
         }
 
@@ -165,11 +207,24 @@ namespace Assets.Scripts
         {
             if (ship != null && ship.Owner == currentPlayer) 
             {
+                if(currentSelection != null) { currentSelection.HidePathUIIcons(); } // hide path icons UI for previous selection
                 currentSelection = ship;
-                currentAbility = ship.GetAbilities()[0]; // TODO: this is temp! this should initially be nothing (=movement)
                 updateCommandQueueUI();
                 updateSidePanelUI();
+                currentSelection.DrawPathUI();
             }
+        }
+
+
+        public void SetSelectedAbility(Ability ability)
+        {
+            currentAbility = ability;
+        }
+
+
+        public void SetSelectedSegment(int index)
+        {
+            currentSegment = index;
         }
 
 
@@ -197,18 +252,8 @@ namespace Assets.Scripts
             List<Ability> abilityList = currentSelection.GetAbilities();
             for (int i=0; i < abilityList.Count; i++)
             {
-                AbilityUiIcons[i].GetComponent<Image>().sprite = abilityList[i].GetIcon();
+                AbilityUiIcons[i].GetComponent<AbilityButton>().SetAbility(abilityList[i]);
             }
-        }
-
-
-        private void OnRightMouseClick()
-        {
-            Vector3 mousePointer = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePointer.z = 0;
-            currentSelection.SetDestination(mousePointer);
-            PathsManager.Instance.DrawPath(currentSelection, mousePointer);
-            print(currentSelection.LineRenderer.numPositions);
         }
 
 

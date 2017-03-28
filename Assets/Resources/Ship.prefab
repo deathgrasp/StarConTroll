@@ -228,8 +228,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 20
-  MoveSpeedSec: 1
-  MoveSpeed: 10
+  MoveSpeedSec: 3
+  MoveSpeed: 30
   TurnSpeedSec: 50
   TurnSpeed: 0
   Destination: {x: 0, y: 0, z: 0}

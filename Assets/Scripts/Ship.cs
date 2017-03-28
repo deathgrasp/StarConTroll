@@ -24,14 +24,16 @@ namespace Assets.Scripts
             LineRenderer.startWidth = 0.05f;
             LineRenderer.endWidth = 0.05f;
             PathsManager.Instance.DrawPath(this, Destination);
-
-            // TODO: pack the linerender and the ability icons shown on the path, and every other UI item into a new class "ShipUI"
-            //Image newImage = Instantiate(commandUiIconPrefab, UICanvas.Instance);
-            //Image[0] = newImage;
-        	//newButton.transform.SetParent(newCanvas.transform, false);
+            for (int i=0; i<CommandUiIcons.Length; i++)
+            {
+            	Image newImage = Instantiate(Resources.Load<Image>("CommandUiIcon"));
+            	newImage.transform.SetParent(UICanvas.Instance.WorldCanvas.transform, false);
+            	CommandUiIcons[i] = newImage;
+            	newImage.gameObject.SetActive(false);
+            }
 
             // add abilites to ship
-            AbilityList.Add(ScriptableObject.CreateInstance<Ability_ShootMissile>()); // TODO: change the entire ability list to components?
+            AbilityList.Add(ScriptableObject.CreateInstance<Ability_ShootMissile>()); // TODO: change the entire ability list to components?? or not?
         }
 
         // Update is called once per frame
@@ -47,6 +49,40 @@ namespace Assets.Scripts
                     CommandQueue[i].Execute();
                     SetCommand(i, null);
                 }
+            }
+        }
+
+
+        public void DrawPathUI()
+        {
+            PathsManager.Instance.DrawPath(this, Destination); // draw movement path
+
+            // draw segment icons along movement path
+            for (int i=0; i<GetCommandQueue().Length; i++)
+            {
+            	GetCommandUiIcons()[i].gameObject.SetActive(true);
+            	int pathPosIndex = i*ConfigurationManager.UpdatesInTurn/GetCommandQueue().Length;
+
+            	if (LineRenderer.numPositions == 0) { GetCommandUiIcons()[i].gameObject.SetActive(false); } // hide all icons if there is no path
+            	if (pathPosIndex > LineRenderer.numPositions) { GetCommandUiIcons()[i].gameObject.SetActive(false); } // hide all icons
+                GetCommandUiIcons()[i].transform.position = LineRenderer.GetPosition(pathPosIndex);
+                if (GetCommandQueue()[i] != null) 
+                {
+                    GetCommandUiIcons()[i].sprite = GetCommandQueue()[i].GetAbility().GetIcon();
+                }
+                else
+                {
+                    GetCommandUiIcons()[i].sprite = null;
+                }
+            }
+        }
+
+
+        public void HidePathUIIcons()
+        {
+        	for (int i=0; i<GetCommandQueue().Length; i++)
+            {
+            	GetCommandUiIcons()[i].gameObject.SetActive(false);
             }
         }
 
@@ -72,6 +108,12 @@ namespace Assets.Scripts
         public List<Ability> GetAbilities()
         {
             return AbilityList;
+        }
+
+
+        public Image[] GetCommandUiIcons()
+        {
+            return CommandUiIcons;
         }
 
 
