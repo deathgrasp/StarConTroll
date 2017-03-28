@@ -12,22 +12,18 @@ namespace Assets.Scripts
         private Stack<Vector3> _pathPointStack = new Stack<Vector3>(); //current path. getting restarted on each DrawPath and then repopulated again
         private Stack<Vector3> _helperStack = new Stack<Vector3>();//helper to keep avoid instantiating new vectors each time
         private const int MAXPATHPOINTS = 1000;
-        void Start()
+        void Awake()
         {
             for (int i = 0; i < MAXPATHPOINTS; i++)
             {
                 _helperStack.Push(new Vector3());
             }
         }
-        
-        public void DrawPath(SpaceObject so, Vector3 destination, LineRenderer lineRenderer=null)
+
+        public Stack<Vector3> PlanPath(SpaceObject so, Vector3 destination)
         {
             ClearStack();
             destination.z = 0;
-            if (!lineRenderer) //if not given a linerenderer, uses the spaceobject's
-            {
-                lineRenderer = so.LineRenderer;
-            }
             //save ship location
             var initialPosition = so.transform.position;
             var initialRotation = so.transform.rotation;
@@ -39,14 +35,24 @@ namespace Assets.Scripts
                 so.Move(destination);
                 counter++;
             }
-
-            //add points to the linerenderer
-            lineRenderer.numPositions=_pathPointStack.Count;
-            lineRenderer.SetPositions(_pathPointStack.Reverse().ToArray());
-            
+            var path = new Stack<Vector3>(_pathPointStack);
             //return to initial state
             so.transform.position = initialPosition;
             so.transform.rotation = initialRotation;
+            return path;
+        }
+        public void DrawPath(SpaceObject so, Vector3 destination, LineRenderer lineRenderer=null)
+        {
+            var path = PlanPath(so, destination);
+            if (!lineRenderer) //if not given a linerenderer, uses the spaceobject's
+            {
+                lineRenderer = so.LineRenderer;
+            }
+
+            //add points to the linerenderer
+            lineRenderer.numPositions=path.Count;
+            lineRenderer.SetPositions(path.Reverse().ToArray());
+            
         }
         //move a point from the pool into the stack and set its values
         void AddPoint(Vector3 point)

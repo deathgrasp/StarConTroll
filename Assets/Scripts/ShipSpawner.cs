@@ -34,7 +34,7 @@ namespace Assets.Scripts
         {
             var list = new List<Ship>();
             var spawnAmount = owner.Number==1 ? Player1Ships : Player2Ships;
-            var pos = owner.Number == 1 ? new Vector3(-spawnAmount, -spawnAmount, 0) : new Vector3(spawnAmount, -spawnAmount, 0);
+            var pos = owner.Number == 1 ? new Vector3(-5-spawnAmount, -spawnAmount, 0) : new Vector3(5+spawnAmount, -spawnAmount, 0);
             for (int i = 0; i < spawnAmount; i++)
             {
                 var ship=Instantiate(ShipPrefab, pos, Quaternion.FromToRotation(pos, Vector3.zero)) as Ship;
