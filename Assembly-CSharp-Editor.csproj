@@ -100,7 +100,7 @@
      <None Include="Assets\UnityTestTools\Examples\IntegrationTestsFrameworkExamples\AngryBotsTests\Shaders\BackgroundAndCharacters\SuperSimpleSelfIllumination.shader" />
      <None Include="Assets\UnityTestTools\Examples\IntegrationTestsFrameworkExamples\AngryBotsTests\Shaders\Fx\ParticleBlend.shader" />
  <Reference Include="Assembly-UnityScript">
- <HintPath>C:/Users/Rani/Desktop/פרויקט/StarConTroll/Library/ScriptAssemblies/Assembly-UnityScript.dll</HintPath>
+ <HintPath>C:/Users/Rani/Desktop/StarConTroll/Library/ScriptAssemblies/Assembly-UnityScript.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
@@ -151,7 +151,7 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
  </Reference>
  <Reference Include="NSubstitute">
- <HintPath>C:/Users/Rani/Desktop/פרויקט/StarConTroll/Assets/UnityTestTools/UnitTesting/Editor/NSubstitute/NSubstitute.dll</HintPath>
+ <HintPath>C:/Users/Rani/Desktop/StarConTroll/Assets/UnityTestTools/UnitTesting/Editor/NSubstitute/NSubstitute.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
